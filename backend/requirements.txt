@@ -3,6 +3,7 @@ llama-index-vector-stores-qdrant
 unstructured[pdf,docx,pptx]
 sentence-transformers
 llama-index-llms-groq
+llama-index-tools-mcp
 uvicorn[standard]
 python-multipart
 python-dotenv
@@ -17,3 +18,5 @@ docx2txt
 fastapi
 torch
 groq
+ddgs
+mcp
