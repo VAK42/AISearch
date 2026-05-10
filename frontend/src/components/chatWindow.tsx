@@ -38,11 +38,10 @@ export default function ChatWindow({ sessionId, initialMessages }: chatWindowPro
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
   const formatContent = (t: string) => {
-    let f = t.replace(/\\\\\(/g, "\\(").replace(/\\\\\)/g, "\\)").replace(/\\\\\[/g, "\\[").replace(/\\\\\]/g, "\\]");
-    f = f.replace(/\\\(([\s\S]+?)\\\)/g, "$ $1 $").replace(/\\\[([\s\S]+?)\\\]/g, "\n$$\n$1\n$$\n");
-    f = f.replace(/\(\\displaystyle\s+((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*)\)/g, "\n$$\n$1\n$$\n");
-    f = f.replace(/\(([^()]*?=[^()]*?(\([^()]*?\)[^()]*?)*)\)/g, "$ $1 $");
-    f = f.replace(/\$([\s\S]+?)\$/g, (m, p) => `$${p.replace(/<br\s*\/?>/gi, " ").replace(/\\\\/g, "\\")}$`);
+    let f = t;
+    f = f.replace(/\\\((.+?)\\\)/gs, "$$$1$$");
+    f = f.replace(/\\\[(.+?)\\\]/gs, "\n$$$$$1$$$$\n");
+    f = f.replace(/\$\\displaystyle\s+([\s\S]+?),;/g, "\n$$\n$1\n$$\n");
     return f;
   };
   const handleSend = async () => {
