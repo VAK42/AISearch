@@ -37,6 +37,14 @@ export default function ChatWindow({ sessionId, initialMessages }: chatWindowPro
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  const formatContent = (t: string) => {
+    let f = t.replace(/\\\\\(/g, "\\(").replace(/\\\\\)/g, "\\)").replace(/\\\\\[/g, "\\[").replace(/\\\\\]/g, "\\]");
+    f = f.replace(/\\\(([\s\S]+?)\\\)/g, "$ $1 $").replace(/\\\[([\s\S]+?)\\\]/g, "\n$$\n$1\n$$\n");
+    f = f.replace(/\(\\displaystyle\s+((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*)\)/g, "\n$$\n$1\n$$\n");
+    f = f.replace(/\(([^()]*?=[^()]*?(\([^()]*?\)[^()]*?)*)\)/g, "$ $1 $");
+    f = f.replace(/\$([\s\S]+?)\$/g, (m, p) => `$${p.replace(/<br\s*\/?>/gi, " ").replace(/\\\\/g, "\\")}$`);
+    return f;
+  };
   const handleSend = async () => {
     if (!inputText.trim() || !sessionId || isLoading) return;
     const userMsg: MessageItem = { id: Date.now().toString(), role: "user", content: inputText };
@@ -87,8 +95,8 @@ export default function ChatWindow({ sessionId, initialMessages }: chatWindowPro
           <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-xl ${msg.role === "user" ? "bg-green-950 text-white shadow-lg" : "bg-white text-green-950 border border-green-950 shadow-sm"} rounded p-4 transition-all hover:shadow-md`}>
               <div className={`text-sm ${msg.role === "user" ? "" : "prose prose-sm max-w-none prose-green prose-p:leading-relaxed prose-pre:bg-green-50 prose-pre:text-green-900 prose-strong:text-inherit"}`}>
-                <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]} rehypePlugins={[rehypeRaw, rehypeHighlight, rehypeKatex]}>
-                  {msg.content}
+                <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw, rehypeHighlight, rehypeKatex]}>
+                  {formatContent(msg.content)}
                 </ReactMarkdown>
               </div>
               {msg.role === "assistant" && msg.source && (
