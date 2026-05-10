@@ -1,8 +1,13 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader } from "lucide-react";
+import rehypeHighlight from "rehype-highlight";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 import { sendQuery } from "../lib/apiClient";
 type SourceNode = {
   fileName: string;
@@ -82,7 +87,7 @@ export default function ChatWindow({ sessionId, initialMessages }: chatWindowPro
           <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-xl ${msg.role === "user" ? "bg-green-950 text-white shadow-lg" : "bg-white text-green-950 border border-green-950 shadow-sm"} rounded p-4 transition-all hover:shadow-md`}>
               <div className={`text-sm ${msg.role === "user" ? "" : "prose prose-sm max-w-none prose-green prose-p:leading-relaxed prose-pre:bg-green-50 prose-pre:text-green-900 prose-strong:text-inherit"}`}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath, remarkBreaks]} rehypePlugins={[rehypeRaw, rehypeHighlight, rehypeKatex]}>
                   {msg.content}
                 </ReactMarkdown>
               </div>
