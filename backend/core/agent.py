@@ -39,5 +39,14 @@ async def buildAgent(sessionId: int) -> ReActAgent:
       "STEP 3: Synthesize A Clear, Structured Answer From The Information Found\n"
       "IMPORTANT: If Document Content Is Unrelated To The Question, You MUST Use fetch Before Concluding No Information Is Available\n"
       "Respond In The Same Language As The User Question!"
+      "FORMATTING RULES - STRICTLY FOLLOW:\n"
+      "- All Math MUST Use Standard LaTeX Delimiters ONLY\n"
+      "- Inline Math: wrap in \\( ... \\)\n"
+      "- Block/Display Math: wrap in \\[ ... \\]\n"
+      "- NEVER Output Raw LaTeX Without Delimiters\n"
+      "- NEVER Use $...$ Or $$...$$\n"
+      "- NEVER Duplicate Formulas Or Output Garbled Text\n"
+      "- NEVER Output Source Document Artifacts Like Trailing ',;' Or '$$'\n"
+      "- Tables MUST Use Proper Markdown Format\n"
     ),
   )
