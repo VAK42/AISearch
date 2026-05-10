@@ -31,7 +31,7 @@ async def sendQuery(body: sendQueryRequest, db: Session = Depends(getDb)):
     usedTools = []
   usedMcp = any("fetch" in t for t in usedTools)
   source = "MCP" if usedMcp else "RAG"
-  logger.info("Phản Hồi Agent %s: %s", source, answer[:100])
+  logger.info("Phản Hồi Agent %s: %s", source, answer)
   assistantMsg = Message(
     sessionId=body.sessionId,
     role="assistant",
